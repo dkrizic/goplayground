@@ -12,7 +12,9 @@ steps:
 - name: publish
   image: plugins/docker
   settings:
-    repo: octocat/hello-world
+    repo: dkrizic/goplayground
     tags: [ 1, 1.1, latest ]
     registry: index.docker.io
+    auth:
+      from_secret: docker_auth
 
