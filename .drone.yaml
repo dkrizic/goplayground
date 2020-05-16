@@ -3,11 +3,23 @@ name: goplayground
 kind: pipeline
 type: kubernetes
 
+platform:
+  os: linux
+  arch: arm64
+
 steps:
 - name: backend
   image: golang
+  environment:
+    GOOS=linux
+    GOARCH=arm64
   commands:
     - go build
+  node_selector:
+    kubernetes/arch: arm64
+  volumes:
+    - name: deps
+      path: /go
 
 - name: publish
   image: plugins/docker
@@ -17,4 +29,9 @@ steps:
     registry: index.docker.io
     auth:
       from_secret: docker_auth
-
+  volumes:
+    - name: deps
+      path: /go
+volumes:
+  - name: deps
+    temp: {}
