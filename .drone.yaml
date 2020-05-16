@@ -17,21 +17,13 @@ steps:
     - go build
   node_selector:
     kubernetes/arch: arm64
-  volumes:
-    - name: deps
-      path: /go
 
 - name: publish
   image: plugins/docker
   settings:
     repo: dkrizic/goplayground
-    tags: [ 1, 1.1, latest ]
-    registry: index.docker.io
-    auth:
-      from_secret: docker_auth
-  volumes:
-    - name: deps
-      path: /go
-volumes:
-  - name: deps
-    temp: {}
+    tags: [ "${DRONE_COMMIT_SHA:0:7}","latest" ]
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
