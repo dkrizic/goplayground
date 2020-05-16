@@ -1,0 +1,20 @@
+name: goplayground
+
+kind: pipeline
+type: docker
+
+steps:
+- name: backend
+  image: golang
+  commands:
+    - go get
+    - go build
+    - go test
+
+- name: publish
+  image: plugins/docker
+  settings:
+    repo: octocat/hello-world
+    tags: [ 1, 1.1, latest ]
+    registry: index.docker.io
+
