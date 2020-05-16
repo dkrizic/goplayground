@@ -1,4 +1,4 @@
 FROM scratch
 MAINTAINER darko@krizic.net
-COPY main /go/bin/main
-ENTRYPOINT ["/go/bin/main"]
+COPY goplayground /go/bin/goplayground
+ENTRYPOINT ["/go/bin/goplayground"]
