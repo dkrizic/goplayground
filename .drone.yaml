@@ -11,8 +11,8 @@ steps:
 - name: backend
   image: golang
   environment:
-    GOOS=linux
-    GOARCH=arm64
+    GOOS: linux
+    GOARCH: arm64
   commands:
     - go build
   node_selector:
