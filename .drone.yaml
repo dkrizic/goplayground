@@ -76,7 +76,7 @@ steps:
     password:
       from_secret: docker_password
     target: dkrizic/goplayground:${DRONE_COMMIT_SHA:0:7}
-    template: foo/bar:${DRONE_COMMIT_SHA:0:7}-OS-ARCH
+    template: dkrizic/goplayground:${DRONE_COMMIT_SHA:0:7}-OS-ARCH
     platforms:
       - linux/amd64
       - linux/arm64
