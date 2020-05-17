@@ -10,7 +10,8 @@ platform:
 steps:
 
 - name: test
-  image: golang
+  image: golang:1.14
+  pull: if-not-exists
   node_selector:
     kubernetes/arch: arm64
   environment:
@@ -20,7 +21,8 @@ steps:
     - "go test"
 
 - name: build-arm64
-  image: golang
+  image: golang:1.14
+  pull: if-not-exists
   node_selector:
     kubernetes/arch: arm64
   environment:
@@ -30,7 +32,8 @@ steps:
     - "go build"
 
 - name: build-amd64
-  image: golang
+  image: golang:1.14
+  pull: if-not-exists
   node_selector:
     kubernetes/arch: arm64
   environment:
@@ -41,6 +44,7 @@ steps:
 
 - name: publish-arm64
   image: plugins/docker
+  pull: if-not-exists
   settings:
     repo: dkrizic/goplayground-arm64
     tags: [ "${DRONE_COMMIT_SHA:0:7}","latest" ]
@@ -51,6 +55,7 @@ steps:
 
 - name: publish-amd64
   image: plugins/docker
+  pull: if-not-exists
   settings:
     repo: dkrizic/goplayground-amd64
     tags: [ "${DRONE_COMMIT_SHA:0:7}","latest" ]
