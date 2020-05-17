@@ -32,7 +32,7 @@ steps:
   image: plugins/docker
   pull: if-not-exists
   node_selector:
-    kubernetes/arch: arm64
+    kubernetes/arch: amd64
   settings:
     repo: dkrizic/goplayground
     tags: [ "${DRONE_COMMIT_SHA:0:7}-arm64","latest-arm64" ]
@@ -45,7 +45,7 @@ steps:
   image: golang
   pull: if-not-exists
   node_selector:
-    kubernetes/arch: arm64
+    kubernetes/arch: amd64
   environment:
     GOOS: linux
     GOARCH: amd64
