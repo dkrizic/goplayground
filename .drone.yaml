@@ -81,17 +81,17 @@ steps:
       - linux/amd64
       - linux/arm64
 
-  - name deploy
-    image: bitsbeats/drone-helm3
-    settings:
-      kube_api_server: https://kubernetes.krizic.net:6443
-      kube_certficate:
-        from_secret: kube_certificate
-      kube_token:
-        from_secret: kube_token
-      chart: ./helm/goplayground
-      release: goplayground
-      namespace: goplayground
-      values_yaml: helm/home.yaml
-      wait: true
-      force: true
+- name: deploy
+  image: bitsbeats/drone-helm3
+  settings:
+    kube_api_server: https://kubernetes.krizic.net:6443
+    kube_certficate:
+      from_secret: kube_certificate
+    kube_token:
+      from_secret: kube_token
+    chart: ./helm/goplayground
+    release: goplayground
+    namespace: goplayground
+    values_yaml: helm/home.yaml
+    wait: true
+    force: true
