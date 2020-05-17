@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: goplayground
+  name: goplayground
+  namespace: goplayground
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: goplayground
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: goplayground
+    spec:
+      containers:
+      - image: dkrizic/goplayground:latest
+        imagePullPolicy: Always
+        name: goplayground
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        kubernetes.io/arch: arm64
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30

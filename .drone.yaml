@@ -8,15 +8,26 @@ platform:
   arch: arm64
 
 steps:
-- name: backend
-  image: golang
+
+- name: test
+  image: golang:1.10-alpine
+  node_selector:
+    kubernetes/arch: arm64
   environment:
     GOOS: linux
     GOARCH: arm64
   commands:
-    - go build
+    - "go test"
+
+- name: backend
+  image: golang
   node_selector:
     kubernetes/arch: arm64
+  environment:
+    GOOS: linux
+    GOARCH: arm64
+  commands:
+    - "go build"
 
 - name: publish
   image: plugins/docker
