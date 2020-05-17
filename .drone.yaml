@@ -56,7 +56,7 @@ steps:
   image: plugins/docker
   pull: if-not-exists
   node_selector:
-    kubernetes/arch: arm64
+    kubernetes/arch: amd64
   settings:
     repo: dkrizic/goplayground-amd64
     tags: [ "${DRONE_COMMIT_SHA:0:7}-amd64","latest-amd64" ]
@@ -69,7 +69,7 @@ steps:
   image: plugins/manifest
   pull: if-not-exists
   node_selector:
-    kubernetes/arch: arm64
+    kubernetes/arch: amd64
   settings:
     username:
       from_secret: docker_username
