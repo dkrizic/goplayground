@@ -51,8 +51,6 @@ steps:
       from_secret: docker_username
     password:
       from_secret: docker_password
-  depends_on:
-    - build-arm64
 
 - name: publish-amd64
   image: plugins/docker
@@ -66,8 +64,6 @@ steps:
       from_secret: docker_username
     password:
       from_secret: docker_password
-  depends_on:
-    - build-amd64
 
 - name: manifest
   image: plugins/manifest
@@ -84,7 +80,3 @@ steps:
     platforms:
       - linux/amd64
       - linux/arm64
-  depends_on:
-    - test
-    - publish-amd64
-    - publish-arm64
