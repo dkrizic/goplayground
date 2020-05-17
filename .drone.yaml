@@ -88,5 +88,6 @@ steps:
       - linux/amd64
       - linux/arm64
   depends_on:
+    - test
     - publish-amd64
     - publish-arm64
