@@ -10,7 +10,7 @@ platform:
 steps:
 
 - name: test
-  image: golang:1.10-alpine
+  image: golang
   node_selector:
     kubernetes/arch: arm64
   environment:
@@ -19,7 +19,7 @@ steps:
   commands:
     - "go test"
 
-- name: backend
+- name: build
   image: golang
   node_selector:
     kubernetes/arch: arm64
