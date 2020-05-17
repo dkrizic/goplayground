@@ -13,10 +13,7 @@ steps:
   image: golang
   pull: if-not-exists
   node_selector:
-    kubernetes/arch: amd64
-  environment:
-    GOOS: linux
-    GOARCH: amd64
+    kubernetes/arch: arm64
   commands:
     - "go test"
 
