@@ -45,9 +45,11 @@ steps:
 - name: publish-arm64
   image: plugins/docker
   pull: if-not-exists
+  node_selector:
+    kubernetes/arch: arm64
   settings:
-    repo: dkrizic/goplayground-arm64
-    tags: [ "${DRONE_COMMIT_SHA:0:7}","latest" ]
+    repo: dkrizic/goplayground
+    tags: [ "${DRONE_COMMIT_SHA:0:7}-arm64","latest-arm64" ]
     username:
       from_secret: docker_username
     password:
@@ -58,12 +60,33 @@ steps:
 - name: publish-amd64
   image: plugins/docker
   pull: if-not-exists
+  node_selector:
+    kubernetes/arch: arm64
   settings:
     repo: dkrizic/goplayground-amd64
-    tags: [ "${DRONE_COMMIT_SHA:0:7}","latest" ]
+    tags: [ "${DRONE_COMMIT_SHA:0:7}-amd64","latest-amd64" ]
     username:
       from_secret: docker_username
     password:
       from_secret: docker_password
   depends_on:
     - build-amd64
+
+- name: manifest
+  image: plugins/manifest
+  pull: if-not-exists
+  node_selector:
+    kubernetes/arch: arm64
+  settings:
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    target: dkrizic/goplayground:${DRONE_COMMIT_SHA:0:7}
+    template: foo/bar:${DRONE_COMMIT_SHA:0:7}-OS-ARCH
+    platforms:
+      - linux/amd64
+      - linux/arm64
+  depends_on:
+    - publish-amd64
+    - publish-arm64
