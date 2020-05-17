@@ -13,10 +13,10 @@ steps:
   image: golang
   pull: if-not-exists
   node_selector:
-    kubernetes/arch: arm64
+    kubernetes/arch: amd64
   environment:
     GOOS: linux
-    GOARCH: arm64
+    GOARCH: amd64
   commands:
     - "go test"
 
@@ -52,6 +52,8 @@ steps:
       from_secret: docker_username
     password:
       from_secret: docker_password
+  depends_on:
+    - build-arm64
 
 - name: publish-amd64
   image: plugins/docker
@@ -63,3 +65,5 @@ steps:
       from_secret: docker_username
     password:
       from_secret: docker_password
+  depends_on:
+    - build-amd64
