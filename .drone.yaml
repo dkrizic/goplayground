@@ -1,4 +1,4 @@
-name: goplayground
+name: goplayground-arm64
 
 kind: pipeline
 type: kubernetes
@@ -8,23 +8,19 @@ platform:
   arch: arm64
 
 node_selector:
-  kubernetes.io/arch: amd64
+  kubernetes.io/arch: arm64
 
 steps:
 
 - name: test
   image: golang
   pull: if-not-exists
-  node_selector:
-    kubernetes/arch: arm64
   commands:
     - "go test"
 
 - name: build-arm64
   image: golang
   pull: if-not-exists
-  node_selector:
-    kubernetes/arch: arm64
   environment:
     GOOS: linux
     GOARCH: arm64
@@ -34,8 +30,6 @@ steps:
 - name: publish-arm64
   image: plugins/docker
   pull: if-not-exists
-  node_selector:
-    kubernetes/arch: amd64
   settings:
     repo: dkrizic/goplayground
     tags: [ "${DRONE_COMMIT_SHA:0:7}-linux-arm64" ]
@@ -43,12 +37,24 @@ steps:
       from_secret: docker_username
     password:
       from_secret: docker_password
+---
+name: goplayground-amd64
+
+kind: pipeline
+type: kubernetes
+
+platform:
+  os: linux
+  arch: amd64
+
+node_selector:
+  kubernetes.io/arch: amd64
+
+steps:
 
 - name: build-amd64
   image: golang
   pull: if-not-exists
-  node_selector:
-    kubernetes/arch: amd64
   environment:
     GOOS: linux
     GOARCH: amd64
@@ -67,12 +73,20 @@ steps:
       from_secret: docker_username
     password:
       from_secret: docker_password
+---
+name: goplayground-manifest
+
+kind: pipeline
+type: kubernetes
+
+node_selector:
+  kubernetes.io/arch: arm64
+
+steps:
 
 - name: manifest
   image: plugins/manifest
   pull: if-not-exists
-  node_selector:
-    kubernetes/arch: amd64
   settings:
     username:
       from_secret: docker_username
@@ -84,21 +98,21 @@ steps:
       - linux/amd64
       - linux/arm64
 
-- name: deploy
-  image: pelotech/drone-helm3
-  node_selector:
-    kubernetes/arch: amd64
-  settings:
-    mode: upgrade
-    debug: true
-    release: goplayground
-    chart: ./helm/goplayground
-    kube_api_server: https://kubernetes.krizic.net:6443
-    kubernetes_token:
-      from_secret: kube_token
-    namespace: goplayground
-    values_files: helm/home.yaml
-    values:
-    - "image.tag=${DRONE_COMMIT_SHA:0:7}"
-
-
+#- name: deploy
+#  image: pelotech/drone-helm3
+#  node_selector:
+#    kubernetes/arch: amd64
+#  settings:
+#    mode: upgrade
+#    debug: true
+#    release: goplayground
+#    chart: ./helm/goplayground
+#    kube_api_server: https://kubernetes.krizic.net:6443
+#    kubernetes_token:
+#      from_secret: kube_token
+#    namespace: goplayground
+#    values_files: helm/home.yaml
+#    values:
+#    - "image.tag=${DRONE_COMMIT_SHA:0:7}"
+#
+#
