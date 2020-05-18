@@ -109,7 +109,7 @@ kind: pipeline
 type: kubernetes
 
 node_selector:
-  kubernetes.io/arch: arm64
+  kubernetes.io/arch: amd64
 
 steps:
 
