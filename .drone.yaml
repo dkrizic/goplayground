@@ -121,6 +121,7 @@ steps:
   namespace: goplayground
   deployment: goplayground
   repo: dkrizic/goplayground
+  container: goplayground
   tag: ${DRONE_COMMIT_SHA:0:7}
 
 depends_on:
