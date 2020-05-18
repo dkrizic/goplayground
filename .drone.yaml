@@ -1,4 +1,4 @@
-name: goplayground-arm64
+name: arm64
 
 kind: pipeline
 type: kubernetes
@@ -38,7 +38,7 @@ steps:
     password:
       from_secret: docker_password
 ---
-name: goplayground-amd64
+name: amd64
 
 kind: pipeline
 type: kubernetes
@@ -74,7 +74,7 @@ steps:
     password:
       from_secret: docker_password
 ---
-name: goplayground-manifest
+name: manifest
 
 kind: pipeline
 type: kubernetes
@@ -99,8 +99,32 @@ steps:
       - linux/arm64
 
 depends_on:
-  - goplayground-arm64
-  - goplayground-amd64
+  - arm64
+  - amd64
+
+---
+name: deliver
+
+kind: pipeline
+type: kubernetes
+
+node_selector:
+  kubernetes.io/arch: arm64
+
+steps:
+
+- name: kubectl
+  image: quay.io/honestbee/drone-kubernetes
+  kubernetes_server: https://kubernetes.krizic.net:6443
+  kubernetes_token:
+    from_secret: kube_token
+  namespace: goplayground
+  deployment: goplayground
+  repo: dkrizic/goplayground
+  tag: ${DRONE_COMMIT_SHA:0:7}
+
+depends_on:
+  - manifest
 
 #- name: deploy
 #  image: pelotech/drone-helm3
