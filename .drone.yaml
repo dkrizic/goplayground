@@ -7,6 +7,9 @@ platform:
   os: linux
   arch: arm64
 
+node_selector:
+  kubernetes/arch: amd64
+
 steps:
 
 - name: test
@@ -86,11 +89,13 @@ steps:
   node_selector:
     kubernetes/arch: amd64
   settings:
-    helm_command: upgrade
+    mode: upgrade
     release: goplayground
     chart: ./helm/goplayground
     kube_api_server: https://kubernetes.krizic.net:6443
     kubernetes_token:
       from_secret: kube_token
     namespace: goplayground
+    values:
+      image.tag: "${DRONE_COMMIT_SHA:0:7}"
     values_files: helm/home.yaml
