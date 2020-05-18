@@ -90,6 +90,7 @@ steps:
     kubernetes/arch: amd64
   settings:
     mode: upgrade
+    debug: true
     release: goplayground
     chart: ./helm/goplayground
     kube_api_server: https://kubernetes.krizic.net:6443
@@ -97,5 +98,7 @@ steps:
       from_secret: kube_token
     namespace: goplayground
     values_files: helm/home.yaml
+    values:
+    - "image.tag=${DRONE_COMMIT_SHA:0:7}"
 
 
